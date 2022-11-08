@@ -125,13 +125,14 @@ PriorityStack& operator+(PriorityStack& stack1, PriorityStack& stack2)
 	PriorityStack* stack = new PriorityStack();
 	while (i < stack1.size)
 	{
-		stack->data[i] = stack1.data[i];
+		stack->Push(stack1.data[i]->GetValue(), stack1.data[i]->GetPriority());
 		i++;
 	}
 	i = 0;
 	while (i < stack2.size)
 	{
-		stack->data[i] = stack2.data[i];
+		stack->Push(stack2.data[i]->GetValue(), stack2.data[i]->GetPriority());
+		i++;
 	}
 	return *stack;
 }
