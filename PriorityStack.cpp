@@ -23,7 +23,7 @@ PriorityStack::PriorityStack()
 {
 	capacity = 10;
 	size = 0;
-	data = new PriorityStackItem*[capacity];
+	data = new PriorityStackItem * [capacity];
 }
 void PriorityStack::Push(double value, int priority)
 {
@@ -75,17 +75,17 @@ bool PriorityStack::ExistItem(double value, int priority)
 	return false;
 }
 
-PriorityStack PriorityStack::StackCross(PriorityStack& stack)
+PriorityStack& PriorityStack::StackCross(PriorityStack& stack)
 {
-	PriorityStack stackret;
+	PriorityStack* stackret = new PriorityStack();
 	for (int i = 0; i < this->size; i++)
 	{
 		if (stack.ExistItem(this->data[i]->GetValue(), this->data[i]->GetPriority()))
 		{
-			stackret.Push(this->data[i]->GetValue(), this->data[i]->GetPriority());
+			stackret->Push(this->data[i]->GetValue(), this->data[i]->GetPriority());
 		}
 	}
-	return stackret;
+	return *stackret;
 }
 
 PriorityStack& PriorityStack::operator=(PriorityStack& other)
@@ -93,19 +93,18 @@ PriorityStack& PriorityStack::operator=(PriorityStack& other)
 	if (&other == this) return *this;
 	delete[] data;
 	int size = other.size;
-	
+
 	for (int i = 0; i < size; i++)
 	{
 		this->Push(other.data[i]->GetValue(), other.data[i]->GetPriority());
 	}
-	
+
 	return *this;
-	// TODO: insert return statement here
 }
 
 PriorityStack::PriorityStack(const PriorityStack& other)
 {
-	delete[] data; 
+	delete[] data;
 	capacity = 10;
 	data = new PriorityStackItem * [capacity];
 	size = 0;
@@ -120,28 +119,26 @@ PriorityStack::~PriorityStack()
 	delete[] this->data;
 }
 
-PriorityStack operator+(PriorityStack& stack1, PriorityStack& stack2)
+PriorityStack& operator+(PriorityStack& stack1, PriorityStack& stack2)
 {
-	int i = 0; PriorityStack stack;
+	int i = 0;
+	PriorityStack* stack = new PriorityStack();
 	while (i < stack1.size)
 	{
-		stack.data[i] = stack1.data[i]; 
+		stack->data[i] = stack1.data[i];
 		i++;
 	}
 	i = 0;
 	while (i < stack2.size)
 	{
-		stack.data[i] = stack2.data[i];
+		stack->data[i] = stack2.data[i];
 	}
-	return stack;
+	return *stack;
 }
 
 std::ostream& operator<<(std::ostream& out, const PriorityStack& st)
 {
 	for (int i = st.size - 1; i >= 0; i--)
-	{
 		out << st.data[i]->GetValue() << " " << st.data[i]->GetPriority() << std::endl;
-		
-	}
 	return out;
 }
